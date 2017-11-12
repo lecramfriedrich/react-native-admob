@@ -4,7 +4,9 @@ import {
   requireNativeComponent,
   View,
   NativeEventEmitter,
+  ViewPropTypes
 } from 'react-native';
+import { string, func, style } from 'prop-types';
 
 const RNBanner = requireNativeComponent('RNAdMobDFP', PublisherBanner);
 
@@ -46,7 +48,7 @@ export default class PublisherBanner extends React.Component {
 }
 
 PublisherBanner.propTypes = {
-  style: View.propTypes.style,
+  style: style,
 
   /**
    * AdMob iOS library banner size constants
@@ -61,29 +63,29 @@ PublisherBanner.propTypes = {
    *
    * banner is default
    */
-  bannerSize: React.PropTypes.string,
+  bannerSize: string,
 
   /**
    * AdMob ad unit ID
    */
-  adUnitID: React.PropTypes.string,
+  adUnitID: string,
 
   /**
    * Test device ID
    */
-  testDeviceID: React.PropTypes.string,
+  testDeviceID: string,
 
   /**
    * AdMob iOS library events
    */
-  adViewDidReceiveAd: React.PropTypes.func,
-  didFailToReceiveAdWithError: React.PropTypes.func,
-  adViewWillPresentScreen: React.PropTypes.func,
-  adViewWillDismissScreen: React.PropTypes.func,
-  adViewDidDismissScreen: React.PropTypes.func,
-  adViewWillLeaveApplication: React.PropTypes.func,
-  admobDispatchAppEvent: React.PropTypes.func,
-  ...View.propTypes,
+  adViewDidReceiveAd: func,
+  didFailToReceiveAdWithError: func,
+  adViewWillPresentScreen: func,
+  adViewWillDismissScreen: func,
+  adViewDidDismissScreen: func,
+  adViewWillLeaveApplication: func,
+  admobDispatchAppEvent: func,
+  ...ViewPropTypes,
 };
 
 PublisherBanner.defaultProps = { bannerSize: 'smartBannerPortrait', didFailToReceiveAdWithError: () => {} ,
