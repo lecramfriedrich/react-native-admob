@@ -71,6 +71,11 @@
         request.testDevices = @[_testDeviceID];
       }
     }
+	if (_personalized == nil || [_personalized isEqualToString:@"0"]) {
+      GADExtras *extras = [[GADExtras alloc] init];
+      extras.additionalParameters = @{@"npa": @"1"};
+      [request registerAdNetworkExtras:extras];
+    }
     [_bannerView loadRequest:request];
   }
 }
@@ -105,6 +110,17 @@
       [_bannerView removeFromSuperview];
     }
     [self loadBanner];
+  }
+}
+
+- (void)setPersonalized:(NSString *)personalized
+{
+  if(![personalized isEqual:_personalized]) {
+    _personalized = personalized;
+      if (_bannerView) {
+          [_bannerView removeFromSuperview];
+      }
+      [self loadBanner];
   }
 }
 
