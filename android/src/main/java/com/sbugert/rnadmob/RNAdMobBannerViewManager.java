@@ -3,6 +3,7 @@ package com.sbugert.rnadmob;
 import android.support.annotation.Nullable;
 import android.view.View.OnLayoutChangeListener;
 import android.view.View;
+import android.os.Bundle;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
@@ -27,6 +28,7 @@ public class RNAdMobBannerViewManager extends SimpleViewManager<ReactViewGroup> 
   public static final String PROP_BANNER_SIZE = "bannerSize";
   public static final String PROP_AD_UNIT_ID = "adUnitID";
   public static final String PROP_TEST_DEVICE_ID = "testDeviceID";
+  public static final String PROP_PERSONALIZED = "personalized";
 
   private String testDeviceID = null;
 
@@ -203,6 +205,11 @@ public class RNAdMobBannerViewManager extends SimpleViewManager<ReactViewGroup> 
     this.testDeviceID = testDeviceID;
   }
 
+  @ReactProp(name = PROP_PERSONALIZED)
+  public void setPersonalized(final ReactViewGroup view, final String personalized) {
+    this.personalized = personalized;
+  }
+
   private void loadAd(final AdView adView) {
     if (adView.getAdSize() != null && adView.getAdUnitId() != null) {
       AdRequest.Builder adRequestBuilder = new AdRequest.Builder();
@@ -213,7 +220,17 @@ public class RNAdMobBannerViewManager extends SimpleViewManager<ReactViewGroup> 
           adRequestBuilder = adRequestBuilder.addTestDevice(testDeviceID);
         }
       }
-      AdRequest adRequest = adRequestBuilder.build();
+
+	  if (personalized != null || personalized == "0") {
+		Bundle extras = new Bundle();
+	  	extras.putString("npa", "0");
+		AdRequest adRequest = new AdRequest.Builder()
+        	.addNetworkExtrasBundle(AdMobAdapter.class, extras)
+        	.build();
+	  } else {
+		  AdRequest adRequest = adRequestBuilder.build();
+	  }
+
       adView.loadAd(adRequest);
     }
   }
